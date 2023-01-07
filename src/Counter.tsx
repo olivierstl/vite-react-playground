@@ -1,5 +1,4 @@
-import React, { MouseEvent, useState } from "react"
-import type { Dispatch } from "react"
+import { MouseEvent, useState } from "react"
 
 export function Counter () {
   /**
