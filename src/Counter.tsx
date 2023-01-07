@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from "react"
+import { MouseEvent, useState, useEffect } from "react"
 
 export function Counter () {
   /**
@@ -48,6 +48,29 @@ function useIncrement(initial: number = 0, step: number = 1): [number, () => voi
 export function CounterWithHook () {
   /** Assign custom hook  */
   const [count, increment] = useIncrement(0, 10)
+
+  /**
+   * Executed when a value change (not necessarily render)
+   * second parameter = array of values to observe
+   */
+  useEffect(() => {
+    document.title = `Counter ${count}`
+  }, [count])
+
+  /**
+   * Possible to add multiple useEffect
+   * If second parameter is an empty array
+   * > execute only once when mounted (eq componentDidMount)
+   */
+  useEffect(() => {
+    /** Call on mounted */
+    const timer = setInterval(() => {
+      console.log('Hello')
+    }, 1000)
+
+    /** Executed when component will unmount */
+    return () => clearInterval(timer)
+  }, [])
 
   return (
     <button
