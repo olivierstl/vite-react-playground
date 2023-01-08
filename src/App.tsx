@@ -1,5 +1,5 @@
 import { Counter, CounterWithHook } from './Counter'
-import { Counter as CounterTp } from './CounterTP'
+import { Counter as CounterTp } from './CustomHooksTP'
 
 function App() {
   return (
