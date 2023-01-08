@@ -1,4 +1,5 @@
 import { Counter, CounterWithHook } from './Counter'
+import { Counter as CounterTp } from './CounterTP'
 
 function App() {
   return (
@@ -10,6 +11,8 @@ function App() {
       <p>
         <CounterWithHook></CounterWithHook>
       </p>
+      <h2 className="fw-bold mt-5 mb-3">Custom hook TP</h2>
+      <CounterTp />
     </main>
   )
 }

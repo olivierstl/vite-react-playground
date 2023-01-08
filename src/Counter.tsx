@@ -62,15 +62,15 @@ export function CounterWithHook () {
    * If second parameter is an empty array
    * > execute only once when mounted (eq componentDidMount)
    */
-  useEffect(() => {
-    /** Call on mounted */
-    const timer = setInterval(() => {
-      console.log('Hello')
-    }, 1000)
+  // useEffect(() => {
+  //   /** Call on mounted */
+  //   const timer = setInterval(() => {
+  //     console.log('Hello')
+  //   }, 1000)
 
-    /** Executed when component will unmount */
-    return () => clearInterval(timer)
-  }, [])
+  //   /** Executed when component will unmount */
+  //   return () => clearInterval(timer)
+  // }, [])
 
   return (
     <button
