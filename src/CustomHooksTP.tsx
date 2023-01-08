@@ -84,6 +84,33 @@ export const Counter: FunctionComponent = () => {
   )
 }
 
+
+
+/** Custom hook for fetching datas */
+function useFetch(url: string) {
+  const [state, setState] = useState({
+    items: [],
+    loading: true
+  })
+
+  /** Use effects need a function, not a promise */
+  useEffect(function() {
+    /** Promise goes here */
+    (async function() {
+      const response = await fetch(url)
+      const responseData = await response.json()
+      if(response.ok) {
+        setState({items: responseData, loading: false})
+      } else {
+        alert(JSON.stringify(responseData))
+      }
+      setState(state => ({...state, loading: false}))
+    })()
+  }, [])
+
+  return [state.loading, state.items] as [boolean, unknown[]]
+}
+
 type Todo = {
   userId: number,
   id: number,
@@ -93,23 +120,8 @@ type Todo = {
 
 /** Fetch datas and generate a todo list ul li */
 export function TodoList () {
-  const [todos, setTodos] = useState<Todo[]>([])
-  const [loading, setLoading] = useState(true)
-
-  /** Use effects need a function, not a promise */
-  useEffect(function() {
-    /** Promise goes here */
-    (async function() {
-      const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10')
-      const responseData = await response.json()
-      if(response.ok) {
-        setTodos(responseData)
-      } else {
-        alert(JSON.stringify(responseData))
-      }
-      setLoading(false)
-    })()
-  }, [])
+  const [loading, todos] = useFetch('https://jsonplaceholder.typicode.com/todos?_limit=10')
+  const myTodos = todos as Todo[]
 
   if (loading) {
     return (
@@ -119,7 +131,7 @@ export function TodoList () {
 
   return (
     <ul>
-      {todos.map(todo => <li key={todo.id}>{todo.title}</li>)}
+      {myTodos.map(todo => <li key={todo.id}>{todo.title}</li>)}
     </ul>
   )
 }
@@ -135,23 +147,8 @@ type Comment = {
 /** fetch datas and generate a table with comments */
 export const CommentsTable: FunctionComponent = () => {
 
-  const [comments, setComments] = useState<Comment[]>([])
-  const [loading, setLoading] = useState(true)
-
-  /** Use effects need a function, not a promise */
-  useEffect(function() {
-    /** Promise goes here */
-    (async function() {
-      const response = await fetch('https://jsonplaceholder.typicode.com/comments?_limit=10')
-      const responseData = await response.json()
-      if(response.ok) {
-        setComments(responseData)
-      } else {
-        alert(JSON.stringify(responseData))
-      }
-      setLoading(false)
-    })()
-  }, [])
+  const [loading, comments] = useFetch('https://jsonplaceholder.typicode.com/comments?_limit=10')
+  const myComments = comments as Comment[]
 
   if (loading) {
     return (
@@ -169,7 +166,7 @@ export const CommentsTable: FunctionComponent = () => {
         </tr>
       </thead>
       <tbody>
-        {comments.map(comment => (
+        {myComments.map(comment => (
           <tr key={comment.id}>
             <td>{comment.name}</td>
             <td>{comment.email}</td>
