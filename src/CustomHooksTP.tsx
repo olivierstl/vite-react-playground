@@ -83,3 +83,100 @@ export const Counter: FunctionComponent = () => {
     </>
   )
 }
+
+type Todo = {
+  userId: number,
+  id: number,
+  title: string,
+  comlpleted: boolean
+}
+
+/** Fetch datas and generate a todo list ul li */
+export function TodoList () {
+  const [todos, setTodos] = useState<Todo[]>([])
+  const [loading, setLoading] = useState(true)
+
+  /** Use effects need a function, not a promise */
+  useEffect(function() {
+    /** Promise goes here */
+    (async function() {
+      const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10')
+      const responseData = await response.json()
+      if(response.ok) {
+        setTodos(responseData)
+      } else {
+        alert(JSON.stringify(responseData))
+      }
+      setLoading(false)
+    })()
+  }, [])
+
+  if (loading) {
+    return (
+      <p>Loading ...</p>
+    )
+  }
+
+  return (
+    <ul>
+      {todos.map(todo => <li key={todo.id}>{todo.title}</li>)}
+    </ul>
+  )
+}
+
+type Comment = {
+  postId: number,
+  id: number,
+  name: string,
+  email: string,
+  body: string
+}
+
+/** fetch datas and generate a table with comments */
+export const CommentsTable: FunctionComponent = () => {
+
+  const [comments, setComments] = useState<Comment[]>([])
+  const [loading, setLoading] = useState(true)
+
+  /** Use effects need a function, not a promise */
+  useEffect(function() {
+    /** Promise goes here */
+    (async function() {
+      const response = await fetch('https://jsonplaceholder.typicode.com/comments?_limit=10')
+      const responseData = await response.json()
+      if(response.ok) {
+        setComments(responseData)
+      } else {
+        alert(JSON.stringify(responseData))
+      }
+      setLoading(false)
+    })()
+  }, [])
+
+  if (loading) {
+    return (
+      <p>Loading ...</p>
+    )
+  }
+
+  return (
+    <table className="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        {comments.map(comment => (
+          <tr key={comment.id}>
+            <td>{comment.name}</td>
+            <td>{comment.email}</td>
+            <td>{comment.body}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
+}
